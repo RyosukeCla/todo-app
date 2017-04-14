@@ -8,13 +8,8 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var api = require('./routes/api')
 
-/*
-const MONGO_URL = process.env.MONGODB_URL;
-var mongoose = require('mongoose');
-var db = mongoose.connect(MONGO_URL);
-*/
-
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
