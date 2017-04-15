@@ -39,4 +39,30 @@ router.route('/todo').post(
   }
 );
 
+router.route('/todo/:todo_id').put(
+  function(req, res) {
+    Todo.findById(req.params.todo_id, function(err, todo) {
+      if (err) res.send(err);
+      todo.title = req.body.title;
+      todo.content = req.body.content;
+      todo.has_done = req.body.has_done;
+      todo.updated = Date.now;
+
+      todo.save(function(err) {
+        if (err) res.send(err);
+        res.json({message: 'Todo updated!'});
+      });
+    });
+  }
+).delete(
+  function(req, res) {
+    Todo.remove({
+      _id: req.params.todo_id
+    }, function(err, user) {
+      if (err) res.send(err);
+      res.json({message: 'Successfully deleted!'});
+    });
+  }
+);
+
 module.exports = router;
