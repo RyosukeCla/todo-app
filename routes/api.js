@@ -6,24 +6,84 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://localhost/todoAppJsonAPI');
 var Todo = require('../models/todo');
+var Task = require('../models/task');
 
 /* API */
-
 router.use(function(req, res, next) {
-    console.log('Something is happening.');
-    next();
+  console.log('Something is happening.');
+  next();
 });
 
 router.get('/', function(req, res) {
-    res.json({ message: 'Successfully Posted a test message.' });
+  res.json({ message: 'Successfully Posted a test message.' });
 });
 
+// Task
+
+router.route('/task').post(
+  function(req, res) {
+    console.log("aiueo");
+    console.log(Task);
+    var task = new Task();
+    task.title = req.body.title;
+    task.description = req.body.description;
+
+    task.save(function(err) {
+      if (err) res.send(err);
+      res.json({message: 'Task created!'});
+    });
+  }
+).get(
+  function(req, res) {
+    Task.find(function(err, task) {
+      if (err) res.send(err);
+
+      res.json(task);
+    });
+  }
+);
+
+router.route('/task/:task_id').put(
+  function(req, res) {
+    Task.findById(req.params.task_id, function(err, task) {
+      if (err) res.send(err);
+      task.title = req.body.title;
+      task.description = req.body.description;
+      task.updated = Date.now;
+
+      task.save(function(err) {
+        if (err) res.send(err);
+        res.json({message: 'Task updated!'});
+      });
+    });
+  }
+).delete(
+  function(req, res) {
+    Task.remove({
+      _id: req.params.task_id
+    }, function(err, task) {
+      if (err) res.send(err);
+
+      Todo.remove({
+        task_id: req.params.task_id
+      }, function(err, todo) {
+        if (err) {
+          rollback(task);
+          res.send(err);
+        }
+        res.json({message: 'Successfully deleted!'});
+      });
+
+    });
+  }
+);
+
+// Todo
 router.route('/todo').post(
   function(req, res) {
     var todo = new Todo();
-
+    todo.task_id = req.body.task_id;
     todo.title = req.body.title;
-    todo.content = req.body.content;
 
     todo.save(function(err) {
       if (err) res.send(err);
@@ -39,12 +99,20 @@ router.route('/todo').post(
   }
 );
 
-router.route('/todo/:todo_id').put(
+router.route('/todo/from_task/:task_id').get(
+  function(req, res) {
+    Todo.find({task_id: req.params.task_id}, function(err, todo) {
+      if (err) res.send(err);
+      res.json(todo);
+    });
+  }
+);
+
+router.route('/todo/single/:todo_id').put(
   function(req, res) {
     Todo.findById(req.params.todo_id, function(err, todo) {
       if (err) res.send(err);
       todo.title = req.body.title;
-      todo.content = req.body.content;
       todo.has_done = req.body.has_done;
       todo.updated = Date.now;
 
@@ -58,11 +126,12 @@ router.route('/todo/:todo_id').put(
   function(req, res) {
     Todo.remove({
       _id: req.params.todo_id
-    }, function(err, user) {
+    }, function(err, todo) {
       if (err) res.send(err);
       res.json({message: 'Successfully deleted!'});
     });
   }
 );
+
 
 module.exports = router;
