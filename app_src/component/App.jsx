@@ -3,6 +3,8 @@ import AppBar from 'material-ui/AppBar';
 
 import Todo from './Todo.jsx';
 import Task from './Task.jsx';
+import TaskList from './TaskList.jsx'
+
 export default class App extends React.Component {
   render() {
     const appbar_style = {
@@ -14,12 +16,12 @@ export default class App extends React.Component {
     return(
       <div>
         <AppBar
-          title='Todo App'
+          title='Todo.app'
           style={appbar_style}
+          showMenuIconButton={false}
         />
         <div style={blank} />
-        <Todo />
-        <Task />
+        <TaskList />
       </div>
 
     );
