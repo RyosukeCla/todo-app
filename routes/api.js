@@ -22,11 +22,8 @@ router.get('/', function(req, res) {
 
 router.route('/task').post(
   function(req, res) {
-    console.log("aiueo");
-    console.log(Task);
     var task = new Task();
     task.title = req.body.title;
-    task.description = req.body.description;
 
     task.save(function(err) {
       if (err) res.send(err);
@@ -48,7 +45,6 @@ router.route('/task/:task_id').put(
     Task.findById(req.params.task_id, function(err, task) {
       if (err) res.send(err);
       task.title = req.body.title;
-      task.description = req.body.description;
       task.updated = Date.now;
 
       task.save(function(err) {
