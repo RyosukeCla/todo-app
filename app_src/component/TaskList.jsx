@@ -12,25 +12,29 @@ import Task from './Task.jsx'
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 
+import axios from 'axios';
+
 export default class TaskList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       tasks: [
-        {task_id: "aa", title: "aiueo"},
-        {task_id: "bb", title: "test"}
       ],
       tempTask: "",
       errorMessage: ""
     }
 
+    this.addTask = this.addTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleOnTouchDelete = this.handleOnTouchDelete.bind(this);
     this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
+    this.updateTasks = this.updateTasks.bind(this);
   }
 
   static get defaultProps() {
-    return {};
+    return {
+    };
   }
 
   addTask(newTask) {
@@ -44,12 +48,23 @@ export default class TaskList extends React.Component {
     let newTasks = [];
     for (let i in this.state.tasks) {
       if (this.state.tasks[i].task_id == task_id) {
-
       } else {
         newTasks.push(this.state.tasks[i]);
       }
     }
     this.setState({tasks: newTasks});
+  }
+
+  handleOnTouchDelete(event, task_id) {
+    const deleteTask = this.deleteTask;
+    axios.delete(`/api/task/${task_id}`)
+    .then(function(res) {
+      console.log(res);
+      deleteTask(event, task_id);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
   }
 
   handleOnChange(event, value) {
@@ -64,9 +79,20 @@ export default class TaskList extends React.Component {
   handleOnKeyPress(event) {
     if (event.key === 'Enter') {
       if (this.state.tempTask.length > 0) {
-        this.addTask({
-          title: this.state.tempTask,
-          task_id: ""
+        const addTask = this.addTask;
+        const title = this.state.tempTask;
+        axios.post(`api/task`, {
+          title: title
+        })
+        .then(function(res) {
+          console.log(res);
+          addTask({
+            title: title,
+            task_id: res.data.task_id
+          });
+        })
+        .catch(function(err) {
+          console.log(err);
         });
         this.setState({tempTask: ""});
         this.setState({errorMessage: ""});
@@ -76,16 +102,42 @@ export default class TaskList extends React.Component {
 
   componentDidMount() {
     // use ajax, and get and set tasks
+    const updateTasks = this.updateTasks;
+    axios.get(`/api/task`)
+    .then(function(res) {
+      console.log(res);
+      let newTasks = [];
+      for (let i in res.data) {
+        newTasks.push({
+          task_id: res.data[i]._id,
+          title: res.data[i].title
+        });
+      }
+      updateTasks(newTasks)
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+  }
+
+  updateTasks(tasks) {
+    this.setState({tasks: tasks});
   }
 
   render() {
     const containerStyle = {
       padding: 20
     }
-    const deleteTask = this.deleteTask;
+    const paperStyle = {
+      paddingTop: 0,
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingBottom: 20
+    }
+    const handleOnTouchDelete = this.handleOnTouchDelete;
     return(
       <div style={containerStyle}>
-        <Paper zDepth={2} style={containerStyle}>
+        <Paper zDepth={2} style={paperStyle}>
           <TextField
             fullWidth={true}
             floatingLabelText="Add your task. ('Enter': add)"
@@ -103,7 +155,7 @@ export default class TaskList extends React.Component {
                 <div>
                   <Task
                     key={task.task_id}
-                    onTouchDelete={deleteTask}
+                    onTouchDelete={handleOnTouchDelete}
                     task_id={task.task_id}
                     title={task.title}
                   />

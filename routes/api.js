@@ -25,9 +25,9 @@ router.route('/task').post(
     var task = new Task();
     task.title = req.body.title;
 
-    task.save(function(err) {
+    task.save(function(err, task) {
       if (err) res.send(err);
-      res.json({message: 'Task created!'});
+      res.json({task_id: task._id});
     });
   }
 ).get(
@@ -45,7 +45,7 @@ router.route('/task/:task_id').put(
     Task.findById(req.params.task_id, function(err, task) {
       if (err) res.send(err);
       task.title = req.body.title;
-      task.updated = Date.now;
+      task.updated = Date.now();
 
       task.save(function(err) {
         if (err) res.send(err);
@@ -59,7 +59,6 @@ router.route('/task/:task_id').put(
       _id: req.params.task_id
     }, function(err, task) {
       if (err) res.send(err);
-
       Todo.remove({
         task_id: req.params.task_id
       }, function(err, todo) {
@@ -69,7 +68,6 @@ router.route('/task/:task_id').put(
         }
         res.json({message: 'Successfully deleted!'});
       });
-
     });
   }
 );
@@ -81,9 +79,9 @@ router.route('/todo').post(
     todo.task_id = req.body.task_id;
     todo.title = req.body.title;
 
-    todo.save(function(err) {
+    todo.save(function(err, todo) {
       if (err) res.send(err);
-      res.json({message: 'Todo created!'});
+      res.json({todo_id: todo._id});
     });
   }
 ).get(
@@ -108,9 +106,8 @@ router.route('/todo/single/:todo_id').put(
   function(req, res) {
     Todo.findById(req.params.todo_id, function(err, todo) {
       if (err) res.send(err);
-      todo.title = req.body.title;
       todo.has_done = req.body.has_done;
-      todo.updated = Date.now;
+      todo.updated = Date.now();
 
       todo.save(function(err) {
         if (err) res.send(err);

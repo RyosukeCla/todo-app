@@ -16,7 +16,7 @@ export default class App extends React.Component {
     return(
       <div>
         <AppBar
-          title='Todo.app'
+          title='Todo Share'
           style={appbar_style}
           showMenuIconButton={false}
         />
