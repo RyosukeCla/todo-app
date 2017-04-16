@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 // ------  DB  -------
-const MONGO_URL = process.env.MONGODB_URL || 'localhost';
+const MONGO_URI = process.env.MONGODB_URI || 'localhost';
 var mongoose = require('mongoose');
-var db = mongoose.connect(`mongodb://${MONGO_URL}/todoAppJsonAPI`);
+var db = mongoose.connect(`mongodb://${MONGO_URI}/todoAppJsonAPI`);
 var Todo = require('../models/todo');
 var Task = require('../models/task');
 
