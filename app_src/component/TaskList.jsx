@@ -58,7 +58,6 @@ export default class TaskList extends React.Component {
     const deleteTask = this.deleteTask;
     axios.delete(`/api/task/${task_id}`)
     .then(function(res) {
-      console.log(res);
       deleteTask(event, task_id);
     })
     .catch(function(err) {
@@ -84,7 +83,6 @@ export default class TaskList extends React.Component {
           title: title
         })
         .then(function(res) {
-          console.log(res);
           addTask({
             title: title,
             task_id: res.data.task_id
@@ -104,7 +102,6 @@ export default class TaskList extends React.Component {
     const updateTasks = this.updateTasks;
     axios.get(`/api/task`)
     .then(function(res) {
-      console.log(res);
       let newTasks = [];
       for (let i in res.data) {
         newTasks.push({

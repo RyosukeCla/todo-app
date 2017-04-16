@@ -261,7 +261,6 @@ var Task = function (_React$Component) {
       var toi = todo_id;
       var ev = event;
       _axios2.default.delete('/api/todo/single/' + todo_id).then(function (res) {
-        console.log(res);
         deleteItem(ev, toi);
       }).catch(function (err) {
         console.log(err);
@@ -277,7 +276,6 @@ var Task = function (_React$Component) {
       _axios2.default.put('/api/todo/single/' + todo_id, {
         has_done: ch
       }).then(function (res) {
-        console.log(res);
         checkItem(ev, ch, toi);
       }).catch(function (err) {
         console.log(err);
@@ -305,7 +303,6 @@ var Task = function (_React$Component) {
             title: title,
             task_id: task_id
           }).then(function (res) {
-            console.log(res);
             addItem({
               title: title,
               todo_id: res.data.todo_id
@@ -340,7 +337,6 @@ var Task = function (_React$Component) {
       //this.setState({items: newItems});
       var updateItems = this.updateItems;
       _axios2.default.get('/api/todo/from_task/' + this.props.task_id).then(function (res) {
-        console.log(res);
         var newItems = [];
         for (var i in res.data) {
           newItems.push({
@@ -549,7 +545,6 @@ var TaskList = function (_React$Component) {
     value: function handleOnTouchDelete(event, task_id) {
       var deleteTask = this.deleteTask;
       _axios2.default.delete('/api/task/' + task_id).then(function (res) {
-        console.log(res);
         deleteTask(event, task_id);
       }).catch(function (err) {
         console.log(err);
@@ -575,7 +570,6 @@ var TaskList = function (_React$Component) {
           _axios2.default.post('api/task', {
             title: title
           }).then(function (res) {
-            console.log(res);
             addTask({
               title: title,
               task_id: res.data.task_id
@@ -594,7 +588,6 @@ var TaskList = function (_React$Component) {
       // use ajax, and get and set tasks
       var updateTasks = this.updateTasks;
       _axios2.default.get('/api/task').then(function (res) {
-        console.log(res);
         var newTasks = [];
         for (var i in res.data) {
           newTasks.push({

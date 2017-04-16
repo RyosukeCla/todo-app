@@ -79,7 +79,6 @@ export default class Task extends React.Component {
     const ev = event;
     axios.delete(`/api/todo/single/${todo_id}`)
     .then(function(res) {
-      console.log(res);
       deleteItem(ev, toi);
     })
     .catch(function(err) {
@@ -96,7 +95,6 @@ export default class Task extends React.Component {
       has_done: ch
     })
     .then(function(res) {
-      console.log(res);
       checkItem(ev, ch, toi);
     })
     .catch(function(err) {
@@ -124,7 +122,6 @@ export default class Task extends React.Component {
           task_id: task_id
         })
         .then(function(res) {
-          console.log(res);
           addItem({
             title: title,
             todo_id: res.data.todo_id
@@ -157,7 +154,6 @@ export default class Task extends React.Component {
     const updateItems = this.updateItems;
     axios.get(`/api/todo/from_task/${this.props.task_id}`)
     .then(function(res) {
-      console.log(res);
       let newItems = [];
       for (let i in res.data) {
         newItems.push({
