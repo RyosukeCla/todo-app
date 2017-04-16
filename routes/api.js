@@ -4,7 +4,7 @@ var router = express.Router();
 // ------  DB  -------
 const MONGO_URI = process.env.MONGODB_URI || 'localhost';
 var mongoose = require('mongoose');
-var db = mongoose.connect(`mongodb://${MONGO_URI}/todoAppJsonAPI`);
+var db = mongoose.connect(`mongodb://${MONGO_URI}`);
 var Todo = require('../models/todo');
 var Task = require('../models/task');
 
