@@ -204,7 +204,7 @@ var Task = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Task.__proto__ || Object.getPrototypeOf(Task)).call(this, props));
 
     _this.state = {
-      items: [{ todo_id: "a", title: "aiueo", hasDone: true }, { todo_id: "b", title: "aiueo2", hasDone: false }],
+      items: [],
       tempItem: "",
       errorMessage: "",
       "hover": false
@@ -778,7 +778,7 @@ var Todo = function (_React$Component) {
     get: function get() {
       return {
         todo_id: "",
-        title: "none",
+        title: "",
         hasDone: false,
         onCheck: function onCheck() {},
         onTouchDelete: function onTouchDelete() {}

@@ -17,10 +17,7 @@ export default class Task extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [
-        {todo_id: "a", title: "aiueo", hasDone: true},
-        {todo_id: "b", title: "aiueo2", hasDone: false}
-      ],
+      items: [],
       tempItem: "",
       errorMessage: "",
       "hover": false

@@ -23,7 +23,7 @@ export default class Todo extends React.Component {
   static get defaultProps() {
     return {
       todo_id: "",
-      title: "none",
+      title: "",
       hasDone: false,
       onCheck: function(){},
       onTouchDelete: function() {}
